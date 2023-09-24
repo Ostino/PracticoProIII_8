@@ -1,14 +1,22 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 
-public class Panel extends JPanel implements PropertyChangeListener, MouseMotionListener , MouseListener {
+public class Panel extends JPanel implements PropertyChangeListener, MouseMotionListener , MouseListener{
     private Imagen modelo;
+    private int puntero = 15;
+
+    public int getPuntero() {
+        return puntero;
+    }
+
+    public void setPuntero(int puntero) {
+        this.puntero = puntero;
+    }
+
     private int posX;
     private int posY;
     public Panel(Imagen img) {
@@ -38,7 +46,7 @@ public class Panel extends JPanel implements PropertyChangeListener, MouseMotion
     @Override
     public void mouseDragged(MouseEvent e) {
         if (modelo.isPintable())
-            modelo.punto(e.getX(), e.getY(), 15);
+            modelo.punto(e.getX(), e.getY(), puntero);
     }
 
     @Override
@@ -89,4 +97,5 @@ public class Panel extends JPanel implements PropertyChangeListener, MouseMotion
     public void setPosY(int posY) {
         this.posY = posY;
     }
+
 }
