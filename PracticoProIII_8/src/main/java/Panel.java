@@ -31,6 +31,7 @@ public class Panel extends JPanel implements PropertyChangeListener, MouseMotion
     public Panel(Imagen img) {
 
         modelo = img;
+        this.addMouseListener(this);
         this.addMouseMotionListener(this);
     }
 
@@ -64,9 +65,9 @@ public class Panel extends JPanel implements PropertyChangeListener, MouseMotion
 
     @Override
     public void mouseClicked(MouseEvent e) {
-       // posX= e.getX();
-       // posY= e.getY();
-        //modelo.Airededor(posX,posY);
+        posX= e.getX();
+        posY= e.getY();
+        modelo.Airededor(posX,posY);
         System.out.println("Me hiciste click");
     }
 

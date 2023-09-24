@@ -113,33 +113,36 @@ public class Imagen implements IDibujador {
         pixeles[x][y]=0;
         contador=0;
         if (pixeles[x][y-1]==0x00FFFFFF ){
-            pixeles[x][y-1] = 0;
+            pixeles[x][y-1] = 0x00000000;
             observado.firePropertyChange("IMAGEN",true, false);
+            Airededor(x,y-1);
         }else{
             contador++;}
-
         if (pixeles[x-1][y]==0x00FFFFFF ){
-            pixeles[x-1][y] = 0;
+            pixeles[x-1][y] = 0x00000000;
             observado.firePropertyChange("IMAGEN",true, false);
+            Airededor(x-1,y);
+
         }else{
             contador++;}
         if (pixeles[x][y+1]==0x00FFFFFF ){
-            pixeles[x][y+1] = 0;
+            pixeles[x][y+1] = 0x00000000;
             observado.firePropertyChange("IMAGEN",true, false);
+            Airededor(x,y+1);
         }else{
             contador++;}
         if (pixeles[x+1][y]==0x00FFFFFF ){
-            pixeles[x+1][y] = 0;
+            pixeles[x+1][y] = 0x00000000;
             observado.firePropertyChange("IMAGEN",true, false);
+            Airededor(x+1,y);
         }else{
             contador++;}
-        Airededor(x,y-1);
-        Airededor(x-1,y);
-        Airededor(x,y+1);
-        Airededor(x+1,y);
         if(contador == 4){
-            return;
+            return ;
         }
+
+
+
     }
     public void movArriba(int num) throws InterruptedException {
         if (isPintable()) {
