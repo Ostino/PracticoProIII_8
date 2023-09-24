@@ -13,6 +13,16 @@ public class Imagen implements IDibujador {
     private PropertyChangeSupport observado;
     private boolean pintable;
     private boolean baldePintura;
+
+    public boolean isBorrador() {
+        return borrador;
+    }
+
+    public void setBorrador(boolean borrador) {
+        this.borrador = borrador;
+    }
+
+    private boolean borrador;
     private int LapizFinalX = 256;
     private int LapizFinalY = 256;
     private int tempo =10;
@@ -206,16 +216,27 @@ public class Imagen implements IDibujador {
         }
     }
     public void punto(int x, int y, int tamano) {
-
-        for (int i = x - tamano / 2; i < x + tamano / 2; i++) {
-            for (int j = y - tamano / 2; j < y + tamano / 2; j++) {
-                if (i >= 0 && i < ancho &&
-                        j >= 0 && j < alto) {
-                    pixeles[i][j] = colorHex;
+        if (isBorrador() == false) {
+            for (int i = x - tamano / 2; i < x + tamano / 2; i++) {
+                for (int j = y - tamano / 2; j < y + tamano / 2; j++) {
+                    if (i >= 0 && i < ancho &&
+                            j >= 0 && j < alto) {
+                        pixeles[i][j] = colorHex;
+                    }
                 }
             }
+            observado.firePropertyChange("IMAGEN", true, false);
+        }else{
+            for (int i = x - tamano / 2; i < x + tamano / 2; i++) {
+                for (int j = y - tamano / 2; j < y + tamano / 2; j++) {
+                    if (i >= 0 && i < ancho &&
+                            j >= 0 && j < alto) {
+                        pixeles[i][j] = 0x00FFFFFF;
+                    }
+                }
+            }
+            observado.firePropertyChange("IMAGEN", true, false);
         }
-        observado.firePropertyChange("IMAGEN", true, false);
     }
 
     public boolean CheckHex(String hex){

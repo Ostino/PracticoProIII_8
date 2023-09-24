@@ -101,6 +101,15 @@ public class Ventana extends JFrame {
         }));
         menu.add(item);
         bar.add(menu);
+        item = new JMenuItem("Borrador");
+        item.addActionListener((new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnBorrador();
+            }
+        }));
+        menu.add(item);
+        bar.add(menu);
 
         this.setJMenuBar(bar);
 
@@ -170,9 +179,11 @@ public class Ventana extends JFrame {
         try {
         modelo.setColorHex(Integer.parseInt(HEX,16));
         }catch (NumberFormatException e){
-
          }
     }
+    }
+    private  void btnBorrador(){
+        modelo.setBorrador(!modelo.isBorrador());
     }
     public static void main(String[] args) throws Exception {
         new Ventana();
