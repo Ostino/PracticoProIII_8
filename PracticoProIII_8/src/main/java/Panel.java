@@ -9,23 +9,6 @@ import java.beans.PropertyChangeListener;
 
 public class Panel extends JPanel implements PropertyChangeListener, MouseMotionListener , MouseListener {
     private Imagen modelo;
-
-    public int getPosX() {
-        return posX;
-    }
-
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
-
-    public int getPosY() {
-        return posY;
-    }
-
-    public void setPosY(int posY) {
-        this.posY = posY;
-    }
-
     private int posX;
     private int posY;
     public Panel(Imagen img) {
@@ -37,7 +20,7 @@ public class Panel extends JPanel implements PropertyChangeListener, MouseMotion
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(600, 600);
+        return new Dimension(512, 512);
     }
 
     @Override
@@ -54,8 +37,8 @@ public class Panel extends JPanel implements PropertyChangeListener, MouseMotion
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (modelo.isPintable() == true)
-            modelo.punto(e.getX(), e.getY(), 20);
+        if (modelo.isPintable())
+            modelo.punto(e.getX(), e.getY(), 15);
     }
 
     @Override
@@ -67,7 +50,8 @@ public class Panel extends JPanel implements PropertyChangeListener, MouseMotion
     public void mouseClicked(MouseEvent e) {
         posX= e.getX();
         posY= e.getY();
-        modelo.Airededor(posX,posY);
+        if (posX<= 512){
+        modelo.Airededor(posX,posY);}
         System.out.println("Me hiciste click");
     }
 
@@ -89,5 +73,20 @@ public class Panel extends JPanel implements PropertyChangeListener, MouseMotion
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+    public int getPosX() {
+        return posX;
+    }
+
+    public void setPosX(int posX) {
+        this.posX = posX;
+    }
+
+    public int getPosY() {
+        return posY;
+    }
+
+    public void setPosY(int posY) {
+        this.posY = posY;
     }
 }

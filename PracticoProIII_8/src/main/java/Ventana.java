@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -9,9 +11,7 @@ import java.net.Socket;
 public class Ventana extends JFrame {
 
     private static Imagen modelo;
-
     Panel panel = new Panel(modelo);
-
     public Ventana() {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -23,16 +23,106 @@ public class Ventana extends JFrame {
 
         Panel panel = new Panel(modelo);
         modelo.addObserver(panel);
-        this.getContentPane().add(panel, BorderLayout.CENTER);
+        this.getContentPane().add(panel, BorderLayout.WEST);
+        JMenuBar bar = new JMenuBar();
 
-       /* JButton btn = new JButton("Achicar");
-        btn.addActionListener(e -> {
-            btnAchicar_clicked();
+        JMenu menu = new JMenu("Operaciones");
+        JMenuItem item = new JMenuItem("Achicar");
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnAchicar_clicked();
+            }
         });
+        menu.add(item);
+        item = new JMenuItem("Matriz de Transformacion");
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnTransformacion_clicked();
+            }
+        });
+        menu.add(item);
+        item = new JMenuItem("Agrandar");
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnAgrandar_clicked();
+            }
+        });
+        menu.add(item);
+        bar.add(menu);
 
+        menu = new JMenu("Colores");
+        item = new JMenuItem("Rojo");
+        item.addActionListener((new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnRojo();
+            }
+        }));
+        menu.add(item);
+        item = new JMenuItem("Azul");
+        item.addActionListener((new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnAzul();
+            }
+        }));
+        menu.add(item);
+        item = new JMenuItem("Verde");
+        item.addActionListener((new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnVerde();
+            }
+        }));
+        menu.add(item);
+        bar.add(menu);
+        item = new JMenuItem("Rellenar");
+        item.addActionListener((new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnRellenar();
+            }
+        }));
+        menu.add(item);
+        bar.add(menu);
+        item = new JMenuItem("Selec. Color");
+        item.addActionListener((new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String valorHexadecimal = JOptionPane.showInputDialog("Por favor, ingresa un valor hexadecimal:");
+                //String valorHexadecimal = "009966CC";
+                String resultString = valorHexadecimal.substring(2);
+               // valorHexadecimal = valorHexadecimal.substring(2);
+                btnEscogerColor(resultString);
+            }
+        }));
+        menu.add(item);
+        bar.add(menu);
 
-        this.getContentPane().add(btn, BorderLayout.NORTH);
+        this.setJMenuBar(bar);
 
+       /*JButton btnR = new JButton("Rojo");
+        btnR.addActionListener(e -> {
+           btnRojo();
+        });
+        //btnR.setBounds(520,40,60,24);
+        panelBotones.add(btnR);
+        JButton btnA = new JButton("Azul");
+        btnA.addActionListener(e -> {
+            btnAzul();
+        });
+        panelBotones.add(btnA);
+        JButton btnV = new JButton("Verde");
+        btnV.addActionListener(e -> {
+            btnVerde();
+        });
+        panelBotones.add(btnV);
+        //this.getContentPane().add(panel, BorderLayout.EAST);
+        //this.getContentPane().add(btnV, BorderLayout.EAST);
+        /*
         btn = new JButton("Matriz de Transformacion");
         btn.addActionListener(e -> {
             btnTransformacion_clicked();
@@ -45,15 +135,17 @@ public class Ventana extends JFrame {
         });
         this.getContentPane().add(btn, BorderLayout.EAST);
 */
-
         this.setVisible(true);
         this.pack();
 
     }
 
+    private void btnRellenar() {
+        modelo.setBaldePintura(!modelo.isBaldePintura());
+    }
 
     private void btnTransformacion_clicked() {
-        modelo.setPintable(false);
+        //modelo.setPintable(false);
         MatrizDeTransformacion m = new MatrizDeTransformacion();
         m.traslacion(modelo.getAncho(), 0);
         m.rotacion(-90);
@@ -68,7 +160,20 @@ public class Ventana extends JFrame {
         modelo.Agrandar(2);
     }
 
+    private void btnRojo() {modelo.setColorHex(0x00FF0000);}
+    private void btnVerde() {
+        modelo.setColorHex(0x0000FF00);
+    }
+    private void btnAzul() {modelo.setColorHex(0x000000FF);}
+    private void btnEscogerColor( String HEX) {
+    if (modelo.CheckHex("0x"+HEX)){
+        try {
+        modelo.setColorHex(Integer.parseInt(HEX,16));
+        }catch (NumberFormatException e){
 
+         }
+    }
+    }
     public static void main(String[] args) throws Exception {
         new Ventana();
 
