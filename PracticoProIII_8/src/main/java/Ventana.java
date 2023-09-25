@@ -51,6 +51,14 @@ public class Ventana extends JFrame {
             }
         });
         menu.add(item);
+        item = new JMenuItem("Limpiar");
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnLimpiar();
+            }
+        });
+        menu.add(item);
         bar.add(menu);
 
         menu = new JMenu("Colores");
@@ -88,15 +96,20 @@ public class Ventana extends JFrame {
         }));
         menu.add(item);
         bar.add(menu);
-        item = new JMenuItem("Selec. Color");
+        item = new JMenuItem("Selec. Color Hex");
         item.addActionListener((new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String valorHexadecimal = JOptionPane.showInputDialog("Por favor, ingresa un valor hexadecimal:");
-                //String valorHexadecimal = "009966CC";
-                String resultString = valorHexadecimal.substring(2);
-               // valorHexadecimal = valorHexadecimal.substring(2);
-                btnEscogerColor(resultString);
+                btnEscogerColor();
+            }
+        }));
+        menu.add(item);
+        bar.add(menu);
+        item = new JMenuItem("Selec. Color RGB");
+        item.addActionListener((new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnEscogerColorRGB();
             }
         }));
         menu.add(item);
@@ -149,6 +162,21 @@ public class Ventana extends JFrame {
 
     }
 
+    private void btnEscogerColorRGB() {
+        String valorHexadecimal = JOptionPane.showInputDialog("Por favor los valores rgb");
+        valorHexadecimal.replaceAll("\\s","");
+        String[] valores = valorHexadecimal.split(",");
+        String hexadecimal= "00";
+        for (String valor : valores) {
+            try {
+                int numero = Integer.parseInt(valor);
+                 hexadecimal =hexadecimal+ Integer.toHexString(numero);
+            } catch (NumberFormatException e) {
+            }
+        }
+        modelo.setColorHex(Integer.parseInt(hexadecimal,16));
+    }
+
     private void btnRellenar() {
         modelo.setBaldePintura(!modelo.isBaldePintura());
     }
@@ -174,16 +202,23 @@ public class Ventana extends JFrame {
         modelo.setColorHex(0x0000FF00);
     }
     private void btnAzul() {modelo.setColorHex(0x000000FF);}
-    private void btnEscogerColor( String HEX) {
-    if (modelo.CheckHex("0x"+HEX)){
+    private void btnEscogerColor() {
+        String valorHexadecimal = JOptionPane.showInputDialog("Por favor, ingresa un valor hexadecimal:");
+        String resultString = valorHexadecimal.substring(2);
+    if (modelo.CheckHex("0x"+resultString)){
         try {
-        modelo.setColorHex(Integer.parseInt(HEX,16));
+            System.out.println(resultString+"  Este");
+        modelo.setColorHex(Integer.parseInt(resultString,16));
         }catch (NumberFormatException e){
          }
     }
     }
     private  void btnBorrador(){
         modelo.setBorrador(!modelo.isBorrador());
+    }
+    private void btnLimpiar(){
+        System.out.println("entre");
+        modelo.imagenBlanca();
     }
     public static void main(String[] args) throws Exception {
         new Ventana();

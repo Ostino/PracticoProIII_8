@@ -64,11 +64,13 @@ public class Imagen implements IDibujador {
             }
         }
     }
+
     public void imagenBlanca(){
         for (int i = 0; i < ancho; i++) {
             for (int j = 0; j < alto; j++) {
                 pixeles[i][j] = 0x00FFFFFF;
             }
+            observado.firePropertyChange("IMAGEN", true, false);
         }
     }
     public void addObserver(PropertyChangeListener listener) {
@@ -139,39 +141,43 @@ public class Imagen implements IDibujador {
     }
     public void Airededor(int x, int y){
         if(isBaldePintura()) {
-            pixeles[x][y] = colorHex;
-            contador = 0;
-            if (pixeles[x][y - 1] != colorHex) {
-                pixeles[x][y - 1] = colorHex;
-                observado.firePropertyChange("IMAGEN", true, false);
-                Airededor(x, y - 1);
-            } else {
-                contador++;
-            }
-            if (pixeles[x - 1][y] != colorHex) {
-                pixeles[x - 1][y] = colorHex;
-                observado.firePropertyChange("IMAGEN", true, false);
-                Airededor(x - 1, y);
+            try {
+                pixeles[x][y] = colorHex;
+                contador = 0;
+                if (pixeles[x][y - 1] != colorHex && (y-1)<513 ) {
+                    pixeles[x][y - 1] = colorHex;
+                    observado.firePropertyChange("IMAGEN", true, false);
+                    Airededor(x, y - 1);
+                } else {
+                    contador++;
+                }
+                if (pixeles[x - 1][y] != colorHex && (x-1)<513) {
+                    pixeles[x - 1][y] = colorHex;
+                    observado.firePropertyChange("IMAGEN", true, false);
+                    Airededor(x - 1, y);
 
-            } else {
-                contador++;
-            }
-            if (pixeles[x][y + 1] != colorHex) {
-                pixeles[x][y + 1] = colorHex;
-                observado.firePropertyChange("IMAGEN", true, false);
-                Airededor(x, y + 1);
-            } else {
-                contador++;
-            }
-            if (pixeles[x + 1][y] != colorHex) {
-                pixeles[x + 1][y] = colorHex;
-                observado.firePropertyChange("IMAGEN", true, false);
-                Airededor(x + 1, y);
-            } else {
-                contador++;
-            }
-            if (contador == 4) {
-                return;
+                } else {
+                    contador++;
+                }
+                if (pixeles[x][y + 1] != colorHex && (y+1)<513) {
+                    pixeles[x][y + 1] = colorHex;
+                    observado.firePropertyChange("IMAGEN", true, false);
+                    Airededor(x, y + 1);
+                } else {
+                    contador++;
+                }
+                if (pixeles[x + 1][y] != colorHex&& (x+1)<513) {
+                    pixeles[x + 1][y] = colorHex;
+                    observado.firePropertyChange("IMAGEN", true, false);
+                    Airededor(x + 1, y);
+                } else {
+                    contador++;
+                }
+                if (contador == 4) {
+                    return;
+                }
+            }catch (StackOverflowError e){
+                System.out.println("Es demasiado grande para llenar");
             }
         }
     }
@@ -240,7 +246,7 @@ public class Imagen implements IDibujador {
     }
 
     public boolean CheckHex(String hex){
-                String regex = "^0x([A-Fa-f0-9]{8})$";
+                String regex = "^0x[A-Fa-f0-9]{8}$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(hex);
                 if (matcher.matches()) {
