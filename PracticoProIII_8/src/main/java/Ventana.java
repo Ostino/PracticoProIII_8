@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -17,7 +18,7 @@ public class Ventana extends JFrame {
 
         this.getContentPane().setLayout(new BorderLayout());
 
-        modelo = new Imagen(512, 512);
+        modelo = new Imagen(1024, 512);
         //modelo.imagen4x4();
         modelo.imagenBlanca();
 
@@ -27,7 +28,15 @@ public class Ventana extends JFrame {
         JMenuBar bar = new JMenuBar();
 
         JMenu menu = new JMenu("Operaciones");
-        JMenuItem item = new JMenuItem("Achicar");
+        JMenuItem item = new JMenuItem("Selec Imagen");
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                meuArchivo_Abrir();
+            }
+        });
+        menu.add(item);
+        item = new JMenuItem("Achicar");
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -231,6 +240,21 @@ public class Ventana extends JFrame {
     private void btnLimpiar(){
         System.out.println("entre");
         modelo.imagenBlanca();
+    }
+    private void meuArchivo_Abrir() {
+        String lastDir = "C:\\Users\\Oscar\\Desktop\\imagenes";
+        JFileChooser inputFile = new JFileChooser();
+        if (!lastDir.equals(""))
+            inputFile.setCurrentDirectory(new File(lastDir));
+
+        inputFile.showOpenDialog(this);
+
+        if (inputFile.getSelectedFile() == null) {
+            JOptionPane.showMessageDialog(this, "You must choose an image");
+            return;
+        }
+        File archivoConImagen = inputFile.getSelectedFile();
+        modelo.cargarImagen(archivoConImagen);
     }
     public static void main(String[] args) throws Exception {
         new Ventana();

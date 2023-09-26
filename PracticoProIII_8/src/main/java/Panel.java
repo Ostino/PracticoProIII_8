@@ -28,7 +28,7 @@ public class Panel extends JPanel implements PropertyChangeListener, MouseMotion
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(512, 512);
+        return new Dimension(1024, 512);
     }
 
     @Override

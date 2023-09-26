@@ -1,6 +1,9 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -275,7 +278,6 @@ public class Imagen implements IDibujador {
                 int g = colorOriginal.getGreen();
                 int b = colorOriginal.getBlue();
                 int rgb = (r+g+b)/3;
-                System.out.println(rgb);
                 String hex= Integer.toHexString(rgb);
                  hex = "00"+hex+""+hex+""+hex;
                  int HexV = Integer.parseInt(hex,16);
@@ -283,5 +285,30 @@ public class Imagen implements IDibujador {
                 observado.firePropertyChange("IMAGEN",true, false);
             }
         }
+    }
+
+    public void cargarImagen(File archivoConImagen) {
+        BufferedImage bi = null;
+        try {
+            bi = ImageIO.read(archivoConImagen);
+        }
+        catch(Exception q)
+        {
+            System.out.println("No pudo cargar la imagen");
+            return;
+        }
+
+        ancho = bi.getWidth();
+        alto = bi.getHeight();
+
+        pixeles = new int[ancho][alto];
+        for (int j = 0; j < alto; j++) {
+            for (int i = 0; i < ancho; i++) {
+                int bgr = bi.getRGB(i, j);
+                pixeles[i][j] = bgr;
+            }
+        }
+
+        observado.firePropertyChange("IMAGEN", true, false);
     }
 }
