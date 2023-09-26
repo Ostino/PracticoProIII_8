@@ -13,38 +13,13 @@ public class Imagen implements IDibujador {
     private PropertyChangeSupport observado;
     private boolean pintable;
     private boolean baldePintura;
-
-    public boolean isBorrador() {
-        return borrador;
-    }
-
-    public void setBorrador(boolean borrador) {
-        this.borrador = borrador;
-    }
-
     private boolean borrador;
     private int LapizFinalX = 256;
     private int LapizFinalY = 256;
     private int tempo =10;
     private int contador;
 
-    public int getColorHex() {
-        return colorHex;
-    }
 
-    public void setColorHex(int colorHex) {
-        this.colorHex = colorHex;
-    }
-
-    private int colorHex = 0x00000000;
-
-    public boolean isBaldePintura() {
-        return baldePintura;
-    }
-
-    public void setBaldePintura(boolean baldePintura) {
-        this.baldePintura = baldePintura;
-    }
 
     public Imagen(int w, int h) {
         ancho = w;
@@ -73,6 +48,7 @@ public class Imagen implements IDibujador {
             observado.firePropertyChange("IMAGEN", true, false);
         }
     }
+
     public void addObserver(PropertyChangeListener listener) {
         observado.addPropertyChangeListener(listener);
     }
@@ -131,14 +107,10 @@ public class Imagen implements IDibujador {
         return ancho;
     }
 
-    public int[][] getPixeles() {
-        return pixeles;
+    public int getPixeles(int x, int y) {
+        return pixeles[x][y];
     }
 
-    public void setLapizFinalY(int y){ LapizFinalY=y;
-    }
-    public void setLapizFinalX(int x){LapizFinalX=x;
-    }
     public void Airededor(int x, int y){
         if(isBaldePintura()) {
             try {
@@ -181,6 +153,7 @@ public class Imagen implements IDibujador {
             }
         }
     }
+
     public void movArriba(int num) throws InterruptedException {
         if (isPintable()) {
             for (int i = 0; i < num; i++) {
@@ -191,6 +164,7 @@ public class Imagen implements IDibujador {
             }
         }
     }
+
     public void movAbajo(int num) throws InterruptedException {
         if (isPintable()) {
             for (int i = 0; i < num; i++) {
@@ -201,6 +175,7 @@ public class Imagen implements IDibujador {
             }
         }
     }
+
     public void movIzquierda(int num) throws InterruptedException {
         if (isPintable()) {
             for (int i = 0; i < num; i++) {
@@ -211,6 +186,7 @@ public class Imagen implements IDibujador {
             }
         }
     }
+
     public void movDerecha(int num) throws InterruptedException {
         if (isPintable()) {
             for (int i = 0; i < num; i++) {
@@ -221,6 +197,7 @@ public class Imagen implements IDibujador {
             }
         }
     }
+
     public void punto(int x, int y, int tamano) {
         if (isBorrador() == false) {
             for (int i = x - tamano / 2; i < x + tamano / 2; i++) {
@@ -255,11 +232,56 @@ public class Imagen implements IDibujador {
                     return false;
         }
     }
+
     public boolean isPintable() {
         return pintable;
     }
 
+    public boolean isBorrador() {
+        return borrador;
+    }
+
+    public void setBorrador(boolean borrador) {
+        this.borrador = borrador;
+    }
+
     public void setPintable(boolean pintable) {
         this.pintable = pintable;
+    }
+
+    public int getColorHex() {
+        return colorHex;
+    }
+
+    public void setColorHex(int colorHex) {
+        this.colorHex = colorHex;
+    }
+
+    private int colorHex = 0x00000000;
+
+    public boolean isBaldePintura() {
+        return baldePintura;
+    }
+
+    public void setBaldePintura(boolean baldePintura) {
+        this.baldePintura = baldePintura;
+    }
+
+    public void  HacerGris (){
+        for (int i = 0; i <ancho ; i++) {
+            for (int j = 0; j <alto ; j++) {
+                Color colorOriginal = Color.decode(String.valueOf(pixeles[i][j]));
+                int r = colorOriginal.getRed();
+                int g = colorOriginal.getGreen();
+                int b = colorOriginal.getBlue();
+                int rgb = (r+g+b)/3;
+                System.out.println(rgb);
+                String hex= Integer.toHexString(rgb);
+                 hex = "00"+hex+""+hex+""+hex;
+                 int HexV = Integer.parseInt(hex,16);
+                pixeles[i][j]= HexV;
+                observado.firePropertyChange("IMAGEN",true, false);
+            }
+        }
     }
 }

@@ -59,6 +59,14 @@ public class Ventana extends JFrame {
             }
         });
         menu.add(item);
+        item = new JMenuItem("Grises");
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnGris();
+            }
+        });
+        menu.add(item);
         bar.add(menu);
 
         menu = new JMenu("Colores");
@@ -162,6 +170,10 @@ public class Ventana extends JFrame {
 
     }
 
+    private void btnGris() {
+        modelo.HacerGris();
+    }
+
     private void btnEscogerColorRGB() {
         String valorHexadecimal = JOptionPane.showInputDialog("Por favor los valores rgb");
         valorHexadecimal.replaceAll("\\s","");
@@ -208,7 +220,7 @@ public class Ventana extends JFrame {
     if (modelo.CheckHex("0x"+resultString)){
         try {
             System.out.println(resultString+"  Este");
-        modelo.setColorHex(Integer.parseInt(resultString,16));
+        modelo.setColorHex(Integer.parseInt(resultString,16));//Lo que acepta el hexa sin el 0x
         }catch (NumberFormatException e){
          }
     }
